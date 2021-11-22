@@ -25,6 +25,9 @@
 import sygIcon from "@/components/common/svgIcon.vue";
 export default {
   name: "myIcon",
+  components: {
+    sygIcon,
+  },
   methods: {
     goToHome() {},
     goToGithub() {},
