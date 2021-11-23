@@ -57,11 +57,12 @@ export default {
     }
   },
   mounted(){
-    console.log(this.articleDetail)
   },
   methods:{
     goToDetail(){
-
+      this.$router.push({
+          path:`/detail/${this.articleDetail.id}`
+      })
     }
   }
 }
@@ -72,7 +73,7 @@ export default {
   width:100%;
   padding: 20px 40px;
   background:#FFFFFF;
-  box-sizing: 0 0 6px 0 #E0E0E0;
+  box-shadow: 0 0 6px 0 #E0E0E0;
   border-radius: 6px;
   margin-bottom: 10px;
   .title{

@@ -55,7 +55,6 @@ export default {
     }
   },
   mounted(){
-    console.log(this.articleList)
   },
   methods:{
     async getList(){

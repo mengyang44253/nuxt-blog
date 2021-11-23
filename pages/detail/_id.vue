@@ -1,24 +1,157 @@
 <template>
-  <div class="wrap">
+  <div class="detail">
     <!--文章内容-->
     <div class="article section">
-
+      <h2 class="title tc">
+        {{ articleDetail[1].title }}
+      </h2>
+      <div class="other-info">
+        <div class="mr10">
+          <i class="el-icon-user"></i>
+          <span class="author">
+            Dylan
+          </span>
+        </div>
+        <div class="mr10">
+          <i class="iconfont icon-shijian"></i>
+          <span class="time">
+            {{ articleDetail[1].createTime | secondFormat }}
+          </span>
+        </div>
+        <div class="mr10">
+          <i class="iconfont icon-yueduliang"></i>
+          <span>
+            {{ articleDetail[1].readVolume }}
+          </span>
+        </div>
+        <div class="mr10">
+          <i class="iconfont icon-pingjia"></i>
+          <span>
+            {{ commentTotal }}
+          </span>
+        </div>
+      </div>
+      <div class="content-details" v-html="articleDetail[1].content"></div>
     </div>
     <!--  本文地址-->
     <div class="section copyright">
-
+      <p class="ml10 mb10">
+        <strong>版权声明:</strong>
+        本站文章除特别声明外，均为本站原创。转载请注明出处，谢谢。
+      </p>
+      <p class="ml10">
+        <strong>本文地址:</strong>
+        <a :href="fullPath" target="_blank">{{ fullPath }}</a>
+      </p>
     </div>
     <!--  点赞-->
     <div class="operation section">
-
+      <div class="opinion" @click="likeSomeArticle">
+        <div class="like-wrap" title="点赞">
+          <i class="iconfont icon-dianzan"></i>
+        </div>
+      </div>
+      <!-- 分享 -->
+      <!-- <div class="share">
+        <span>
+          分享到
+        </span>
+        <a href="">qq</a>
+        <a href="">qq空间</a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+      </div> -->
+      <!-- 标签 -->
+      <div class="tag-wrap mb10 tc">
+        <i class="iconfont icon-tag"></i>
+        <template
+          v-for="item in articleDetail[1].label_data.filter(
+            item => item.label_type === 1
+          )"
+        >
+          <span class="tag-name" :key="item.label_id">
+            {{ item.label_name }}
+          </span>
+        </template>
+      </div>
+      <div class="relative-link">
+        <div class="prev mb10">
+          <p v-if="articleDetail[0].id">
+            上一篇：
+            <nuxt-link
+              :to="{
+                name: 'detail',
+                params: { id: articleDetail[0].id }
+              }"
+            >
+              {{ articleDetail[0].title }}
+            </nuxt-link>
+          </p>
+          <p v-else>已经是第一篇了！</p>
+        </div>
+        <div class="nuxt">
+          <p v-if="articleDetail[2].id">
+            上一篇：
+            <nuxt-link
+              :to="{
+                name: 'detail',
+                params: { id: articleDetail[2].id }
+              }"
+            >
+              {{ articleDetail[2].title }}
+            </nuxt-link>
+          </p>
+          <p v-else>已经是最后一篇了！</p>
+        </div>
+      </div>
     </div>
     <!--  作者信息-->
     <div class="author section">
-
+      <div class="avatar-wrap">
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="myAvatar"
+          fit="cover"
+        ></el-image>
+      </div>
+      <div class="userinfo">
+        <div class="header">
+          <span>
+            作者简介
+          </span>
+          <span>
+            <i class="iconfont icon-wo"></i>
+            <span>
+              dylan
+            </span>
+          </span>
+          <span class="cp" @click="openRewardDialog">
+            <i class="iconfont icon-dashang"></i>
+            <span>
+              打赏
+            </span>
+          </span>
+        </div>
+        <p class="author-summary">
+          一日行善，福虽未至，祸自远矣。一日行恶，祸虽未至，福自远矣。行善之人，如春园之草，不见其长，日有所增。做恶之人，如磨刀之石，不见其损，日有所亏。福祸无门总在心，人心不善祸相侵。
+        </p>
+      </div>
     </div>
     <!--  评论列表-->
     <div class="section comment">
-
+      <h2 class="comment-title">
+        共{{ commentTotal }}条关于这篇文章的评论
+      </h2>
+      <commentForm :articleId="articleId"/>
+      <div class="commentWrap" v-loading="commentListLoading">
+        <commentItem
+          @replyComment="replyComment"
+          v-for="item in commentList"
+          :key="item.id"
+          :item="item"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -41,16 +174,16 @@ export default {
     let start = 0;
     let limit = 10;
     let commentTotal = 0;
-    let articleDetail = {};
+    let articleDetail = [];
     let commentList = [];
     query.id = articleId;
-    let res = await store.dispatch("Article/getArticleDetails", query);
+    let res = await store.dispatch("Article/getArticleDetail", query);
     if (res.success) {
       articleDetail = res.data;
     }
-    let commentRes = await store.dispatch("Comment/commentListById", {
+    let commentRes = await store.dispatch("Comment/getCommentList", {
       id: articleId,
-      nopage: 0,
+      pagination: 1,
       start,
       limit
     });
@@ -59,7 +192,7 @@ export default {
     });
     if (commentRes.success) {
       commentList = commentRes.data;
-      commentTotal = commentRes.total;
+      commentTotal = commentRes.count;
     }
     return {
       articleDetail,
@@ -85,6 +218,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.myAvatar)
     //下面这行代码解决prismjs不能异步加载必须刷新一下才显示的问题
     process.browser && document.querySelectorAll("pre code").forEach(block => Prism.highlightElement(block));
   },

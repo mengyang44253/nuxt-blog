@@ -148,12 +148,12 @@ export default {
       };
     },
     save(formName) {
-      this.refs[formName].validate(valid => {
-        if (valid) {
-          this.saveFn();
-        } else {
-          return false;
-        }
+      this.$refs[formName].validate(valid => {
+          if (valid) {
+            this.saveFn();
+          } else {
+            return false;
+          }
       })
     },
     async saveFn() {
@@ -166,6 +166,7 @@ export default {
       params.from_email = this.ruleForm.email;
       params.from_website = this.ruleForm.website;
       params.userAgent = navigator.userAgent;
+      params.status=1
       let res = await this.$store.dispatch("Comment/addComment", params);
       if (res.success) {
         this.btnLoading = false;
@@ -173,7 +174,7 @@ export default {
           message: '评论已提交，审核通过后将展示！',
           type: 'success'
         });
-        this.$emit("refreshList");
+        this.ruleForm.content=""
       }
     }
   }
