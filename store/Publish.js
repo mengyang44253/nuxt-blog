@@ -24,4 +24,23 @@ export const actions = {
     let { data } = await this.$axios.get("/blog/common/articlePraise", params);
     return data;
   },
+  async getHotArticle(context, params) {
+    //热门文章
+    let { data } = await this.$axios.get("/blog/common/hotArticle", {params})
+    return data
+  },
+  async getHotComment(context, params) {
+    //热门评论
+    let { data } = await this.$axios.get("/blog/common/hotComment", {params})
+    return data
+  },
+  async getHotTag(context, params) {
+    //热门tag
+    let { data } = await this.$axios.get("/blog/comment/hotTag", {params})
+    return data
+  },
+  async getFriendLink(context,params) {
+    let { data } = await this.$axios.get("/blog/common/friendLink", { params })
+    return data
+  }
 };

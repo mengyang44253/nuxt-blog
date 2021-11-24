@@ -1,21 +1,21 @@
 <template>
-  <div class="tag-wrap">
+  <div class="friend-wrap">
 
   </div>
 </template>
 
 <script>
 export default {
-  name: "tag",
+  name:"friend",
   async asyncData({store}){
-    let tagList=[]
+    let friendList=[]
     let params={}
-    let res=await store.dispatch("Tag/getTagList",{})
+    let res=await store.dispatch("Friend/getFriendList",params)
     if (res.success) {
-      tagList=res.data
+      friendList=res.data
     }
     return {
-      tagList
+      friendList
     }
   },
   data(){
@@ -28,7 +28,7 @@ export default {
   },
   methods:{
 
-  },
+  }
 }
 </script>
 
