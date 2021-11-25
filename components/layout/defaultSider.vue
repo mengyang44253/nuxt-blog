@@ -66,18 +66,29 @@
     <div class="archive side-wrap mb10"></div>
     <!--  标签-->
     <div class="tag side-wrap mb10">
-      <div class="title">标签</div>
+      <div class="title">
+        <div>
+          标签
+        </div>
+        <div class="more" @click="goToTags">
+          更多>
+        </div>
+      </div>
       <div class="tag-wrap plr20">
-        <div class="item" v-for="item in sideTag" :key="item.id">
-          {{ item.name }}({{ item.group_count }})
+        <div
+          class="item"
+          v-for="item in sideTag"
+          :key="item.id"
+          :class="`color-${random()}`"
+          @click="goToTagDetail(item)"
+        >
+          {{ item.name }}
         </div>
       </div>
     </div>
     <!--  友链-->
     <div class="friend side-wrap">
-      <div class="title">
-        友情链接
-      </div>
+      <div class="title">友情链接</div>
     </div>
   </div>
 </template>
@@ -87,6 +98,7 @@ import MyIcon from "@/components/article/myIcon.vue";
 import SideComment from "@/components/side/comment.vue";
 import SideArticle from "@/components/side/hotArticle.vue";
 import { mapState } from "vuex";
+import { randomNum } from "@/utils/validate";
 
 export default {
   name: "defaultSide",
@@ -98,17 +110,33 @@ export default {
   data() {
     return {};
   },
-  computed: mapState([
-    "articleCount",
-    "articleRead",
-    "commentCount",
-    "articlePraise",
-    "newComment",
-    "sideTag",
-    "hotArticle",
-  ]),
-  mounted() {},
-  methods: {},
+  computed: {
+    ...mapState([
+      "articleCount",
+      "articleRead",
+      "commentCount",
+      "articlePraise",
+      "newComment",
+      "sideTag",
+      "hotArticle",
+    ]),
+  },
+  mounted() {
+    console.log(this.newComment);
+  },
+  methods: {
+    random() {
+      return randomNum(1, 8);
+    },
+    goToTagDetail(item) {
+      console.log(item);
+    },
+    goToTags(){
+      this.$router.push({
+        path:"/tags"
+      })
+    }
+  },
 };
 </script>
 
@@ -164,12 +192,19 @@ export default {
 }
 
 .tag {
+  .title{
+    display: flex;
+    justify-content: space-between;
+  }
   .tag-wrap {
     display: flex;
     flex-wrap: wrap;
 
     .item {
-      margin: 5px;
+      margin: 10px 5px;
+      padding: 3px 6px;
+      border-radius: 5px;
+      cursor: pointer;
     }
   }
 }

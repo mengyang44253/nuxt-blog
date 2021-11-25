@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div class="article-name textOverFlow" @click="goToArticleDetail">
-      评:{{ item.title }}
+      评:{{ item.article_data.title }}
     </div>
     <div class="content">
       <div class="left tc" :class="[`color-${random}`]">
@@ -10,14 +10,14 @@
       <div class="right">
         <div class="top">
           <div class="comment-name">
-            {{item.from_name}}
+            {{ item.from_name }}
           </div>
           <div class="comment-time">
-            {{item.createTime}}
+            {{ item.create_time | secondFormat("LLL") }}
           </div>
         </div>
         <div class="comment-content">
-          {{item.content|textFormat}}
+          {{ item.content | textFormat }}
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {randomNum} from "~/utils/validate";
+import { randomNum } from "~/utils/validate";
 
 export default {
   name: "comment",
@@ -33,42 +33,43 @@ export default {
     item: {
       type: Object,
       default: function () {
-        return {}
-      }
-    }
+        return {};
+      },
+    },
   },
   data() {
-    return {}
+    return {};
   },
   computed: {
-    random(){
-      return randomNum(1,8)
-    }
+    random() {
+      return randomNum(1, 8);
+    },
   },
   mounted() {
-
+    console.log(this.item);
   },
   methods: {
-    goToArticleDetail(){
-      this.$router.push()
-    }
-  }
-}
+    goToArticleDetail() {
+      this.$router.push();
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">
-.item{
+.item {
   width: 100%;
   padding: 20px 0 18px;
-  .article-name{
+  .article-name {
     font-size: 16px;
     font-weight: bold;
     color: #3887ff;
     padding-bottom: 10px;
+    cursor: pointer;
   }
-  .content{
+  .content {
     display: flex;
-    .left{
+    .left {
       width: 50px;
       height: 50px;
       border-radius: 5px;
@@ -77,29 +78,33 @@ export default {
       text-transform: uppercase;
       font-size: 28px;
     }
-    .right{
-      flex: 1;
+    .right {
+      width: 230px;
       padding-left: 10px;
-      .top{
+      .top {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .comment-name{
+        .comment-name {
           font-size: 16px;
           font-weight: 400;
-          color: #3385FF;
+          color: #3385ff;
         }
-        .comment-time{
+        .comment-time {
           font-size: 16px;
           font-weight: 400;
-          color: #CCCCCC;
+          color: #cccccc;
         }
       }
-      .comment-content{
+      .comment-content {
         font-size: 14px;
         font-weight: 400;
         color: #333333;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 10px;
       }
     }
   }

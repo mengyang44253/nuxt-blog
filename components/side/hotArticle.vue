@@ -4,7 +4,7 @@
       {{item.title|textFormat}}
     </div>
     <div class="read-num">
-      {{item.readVolume}}
+      {{item.reading}}
     </div>
   </div>
 </template>
@@ -19,6 +19,9 @@ export default {
         return {}
       }
     }
+  },
+  mounted(){
+    console.log(this.item)
   }
 }
 </script>

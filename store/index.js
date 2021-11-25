@@ -78,7 +78,7 @@ export const actions = {
     let hotTag = await dispatch("Publish/getHotTag", {
       pagination: 1,
       start: 0,
-      limit:5
+      limit:10
     })
     commit("updateSideTag", hotTag.data)
     //友链
