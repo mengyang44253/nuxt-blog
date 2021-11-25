@@ -61,7 +61,17 @@ export default {
   },
   computed: mapState(["menu"]),
   methods: {
-    selectSomeMenu() {},
+    selectSomeMenu(key,keyPath) {
+      console.log(key)
+      console.log(keyPath)
+      if(key ==='/'){
+        this.$router.push({
+          path:"/"
+        })
+      }else{
+
+      }
+    },
     search() {},
   },
 };

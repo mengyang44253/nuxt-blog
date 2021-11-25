@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="article-list-wrap" v-loading="loading">
-      <ArticleDetail v-for="item in articleList" :key="item.id" :articleDetail="item"/>
+      <articleDetail v-for="item in articleList" :key="item.id" :articleDetail="item"/>
     </div>
     <div class="pagination-wrap">
       <el-pagination

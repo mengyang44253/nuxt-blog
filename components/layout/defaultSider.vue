@@ -45,21 +45,21 @@
         </div>
       </div>
       <div class="myicon">
-        <MyIcon />
+        <MyIcon/>
       </div>
     </div>
     <!--  评论-->
     <div class="comment side-wrap mb10">
       <div class="title">最新评论</div>
       <div class="comment-wrap plr20">
-        <SideComment :item="item" v-for="item in newComment" :key="item.id" />
+        <SideComment :item="item" v-for="item in newComment" :key="item.id"/>
       </div>
     </div>
     <!--  热门文章-->
     <div class="hot-article side-wrap mb10">
       <div class="title">热门文章</div>
       <div class="hot-article-wrap plr20">
-        <SideArticle :item="item" v-for="item in hotArticle" :key="item.id" />
+        <SideArticle :item="item" v-for="item in hotArticle" :key="item.id"/>
       </div>
     </div>
     <!--  文章归档-->
@@ -88,7 +88,22 @@
     </div>
     <!--  友链-->
     <div class="friend side-wrap">
-      <div class="title">友情链接</div>
+      <div class="title">
+        <div>
+          友情链接
+        </div>
+        <div class="more" @click="goToFriend">
+          更多>
+        </div>
+      </div>
+      <div class="friend-wrap">
+        <div class="item" v-for="item in friendLink" :key="item.id" :title="item.name" @click="goToOut">
+          <el-image
+            style="width: 100%; height: 100%"
+            :src="item.img"
+            fit="cover"></el-image>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -97,8 +112,8 @@
 import MyIcon from "@/components/article/myIcon.vue";
 import SideComment from "@/components/side/comment.vue";
 import SideArticle from "@/components/side/hotArticle.vue";
-import { mapState } from "vuex";
-import { randomNum } from "@/utils/validate";
+import {mapState} from "vuex";
+import {randomNum} from "@/utils/validate";
 
 export default {
   name: "defaultSide",
@@ -119,21 +134,26 @@ export default {
       "newComment",
       "sideTag",
       "hotArticle",
+      "friendLink"
     ]),
   },
   mounted() {
-    console.log(this.newComment);
+    console.log(this.friendLink)
   },
   methods: {
     random() {
       return randomNum(1, 8);
     },
     goToTagDetail(item) {
-      console.log(item);
     },
-    goToTags(){
+    goToTags() {
       this.$router.push({
-        path:"/tags"
+        path: "/tags"
+      })
+    },
+    goToFriend(){
+      this.$router.push({
+        path:"/friend"
       })
     }
   },
@@ -192,18 +212,42 @@ export default {
 }
 
 .tag {
-  .title{
+  .title {
     display: flex;
     justify-content: space-between;
   }
+
   .tag-wrap {
     display: flex;
     flex-wrap: wrap;
+    padding-top: 10px;
 
     .item {
-      margin: 10px 5px;
+      margin: 0 5px 10px;
       padding: 3px 6px;
       border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.friend {
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .friend-wrap {
+    display: flex;
+    padding: 10px;
+
+    .item {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-right: 10px;
+      margin-bottom: 10px;
       cursor: pointer;
     }
   }

@@ -65,7 +65,6 @@ export const actions = {
       start: 0,
       limit:5
     })
-    console.log(hotArticle)
     commit("updateHotArticle",hotArticle.data)
     //热门评论
     let hotComment = await dispatch("Publish/getHotComment", {

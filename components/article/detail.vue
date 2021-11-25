@@ -53,7 +53,6 @@ export default {
   },
   watch:{
     articleDetail(nv){
-      console.log(nv)
     }
   },
   mounted(){

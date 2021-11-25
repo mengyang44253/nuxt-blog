@@ -218,7 +218,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.myAvatar)
     //下面这行代码解决prismjs不能异步加载必须刷新一下才显示的问题
     process.browser && document.querySelectorAll("pre code").forEach(block => Prism.highlightElement(block));
   },
