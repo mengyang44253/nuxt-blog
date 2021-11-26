@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted(){
-
+    console.log(item)
   },
   methods:{
     replyComment(){

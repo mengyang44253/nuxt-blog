@@ -16,8 +16,13 @@
       <sygIcon name="#icon-weibo" />
     </div>
     <div class="item email" @click="goToEmail">
+      <a href="mailto:466879168@qq.com">
       <sygIcon name="#icon-youxiang1" />
+      </a>
     </div>
+    <el-dialog :visible.sync="dialogVisible" width="400px">
+      <el-image :src="current"></el-image>
+    </el-dialog>
   </div>
 </template>
 
@@ -28,12 +33,34 @@ export default {
   components: {
     sygIcon,
   },
+  data() {
+    return {
+      dialogVisible: false,
+      current:null,
+      qq:"https://react-ams.oss-cn-beijing.aliyuncs.com/blog/qqbuddy.jpg",
+      weChat:"https://react-ams.oss-cn-beijing.aliyuncs.com/blog/wechat.jpg"
+    };
+  },
   methods: {
-    goToHome() {},
-    goToGithub() {},
-    goToQq() {},
-    goToWechat() {},
-    goToWeibo() {},
+    goToHome() {
+      this.$router.push({
+        path: "/",
+      });
+    },
+    goToGithub() {
+      window.open("https://github.com/mengyang44253");
+    },
+    goToQq() {
+      this.current=this.qq
+      this.dialogVisible=true
+    },
+    goToWechat() {
+      this.current=this.weChat
+      this.dialogVisible=true
+    },
+    goToWeibo() {
+      window.open("https://weibo.com/u/5511878287")
+    },
     goToEmail() {},
   },
 };

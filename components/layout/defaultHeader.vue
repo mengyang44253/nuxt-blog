@@ -42,6 +42,7 @@
           size="small"
           placeholder="请输入文章名"
           v-model="searchValue"
+          @keyup.enter="search"
         >
           <el-button @click="search" slot="append" icon="el-icon-search" />
         </el-input>
@@ -72,7 +73,15 @@ export default {
 
       }
     },
-    search() {},
+    search() {
+      console.log(this.searchValue)
+      this.$router.push({
+        name:"search",
+        params:{
+          title:this.searchValue
+        }
+      })
+    },
   },
 };
 </script>

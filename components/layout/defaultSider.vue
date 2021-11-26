@@ -155,6 +155,9 @@ export default {
       this.$router.push({
         path:"/friend"
       })
+    },
+    goToOut(){
+
     }
   },
 };

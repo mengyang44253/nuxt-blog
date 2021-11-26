@@ -49,7 +49,9 @@ export default {
   },
   methods: {
     goToArticleDetail() {
-      this.$router.push();
+      this.$router.push({
+        path:`/detail/${this.item.article_data.id}`
+      });
     },
   },
 };

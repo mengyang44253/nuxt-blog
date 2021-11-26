@@ -187,6 +187,7 @@ export default {
       start,
       limit
     });
+    console.log(commentRes)
     let readRes = await store.dispatch("Article/updateReadByArticleId", {
       id: articleId
     });

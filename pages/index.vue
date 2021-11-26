@@ -25,7 +25,7 @@ export default {
     let total = 0;
     let status=3
     let params = {};
-    params.pagination = 0;
+    params.pagination = 1;
     params.start = currentPage-1;
     params.limit = 10;
     params.status=status
@@ -58,7 +58,18 @@ export default {
   },
   methods:{
     async getList(){
-
+      this.loading=true
+      let params={}
+      params.status=this.status
+      params.start=this.currentPage-1
+      params.limit=10
+      params.pagination=1
+      let res=await this.$store.dispatch("Article/getArticleList",params)
+      if (res.success) {
+        this.articleList=res.data
+        this.total=res.count
+        this.loading=false
+      }
     }
   }
 }
