@@ -55,6 +55,9 @@ export default {
     font-weight: 400;
     color: #cccccc;
     align-items: center;
+    svg{
+      margin-right: 5px;
+    }
   }
 }
 </style>

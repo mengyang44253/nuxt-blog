@@ -1,5 +1,5 @@
 <template>
-  <div class="side-wrap">
+  <div class="sider-wrap">
     <!--  小站-->
     <div class="placard side-wrap mb10">
       <div class="title">个人介绍</div>

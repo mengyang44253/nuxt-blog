@@ -17,50 +17,57 @@
       {{ articleDetail.content|fullTextFormat(200) }}
     </div>
     <div class="original">
-      <div class="left" @click="goToDetail">
-        阅读原文
-      </div>
-      <div class="right">
-        <span>
+      <div class="left">
+        <div>
+          <svgIcon name="#icon-dianzan"/>
+          <span>
           1000
         </span>
-        <span>
+        </div>
+        <div>
+          <svgIcon name="#icon-yueduliang"/>
+          <span>
           100
         </span>
-        <span>
-          100
-        </span>
+        </div>
+
+      </div>
+      <div class="right" @click="goToDetail">
+        阅读原文
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import svgIcon from "~/components/common/svgIcon";
+
 export default {
   name: "detail",
-  props:{
-    articleDetail:{
-      type:Object,
-      default:function(){
+  components: {
+    svgIcon
+  },
+  props: {
+    articleDetail: {
+      type: Object,
+      default: function () {
         return {}
       }
     }
   },
-  dara(){
-    return {
-
+  dara() {
+    return {}
+  },
+  watch: {
+    articleDetail(nv) {
     }
   },
-  watch:{
-    articleDetail(nv){
-    }
+  mounted() {
   },
-  mounted(){
-  },
-  methods:{
-    goToDetail(){
+  methods: {
+    goToDetail() {
       this.$router.push({
-          path:`/detail/${this.articleDetail.id}`
+        path: `/detail/${this.articleDetail.id}`
       })
     }
   }
@@ -68,22 +75,25 @@ export default {
 </script>
 
 <style scoped lang="less">
-.detail{
-  width:100%;
+.detail {
+  width: 100%;
   padding: 20px 40px;
-  background:#FFFFFF;
+  background: #FFFFFF;
   box-shadow: 0 0 6px 0 #E0E0E0;
   border-radius: 6px;
   margin-bottom: 10px;
-  .title{
+
+  .title {
     display: flex;
     justify-content: space-between;
-    .left{
+
+    .left {
       flex: 1;
       display: flex;
-      .tag-icon{
+
+      .tag-icon {
         font-size: 14px;
-        height:22px;
+        height: 22px;
         font-weight: 400;
         color: #FFFFFF;
         background-color: #3385FF;
@@ -91,7 +101,8 @@ export default {
         line-height: 22px;
         padding: 0 5px;
         position: relative;
-        &::after{
+
+        &::after {
           content: "";
           position: absolute;
           right: -15px;
@@ -101,7 +112,8 @@ export default {
           border-bottom: 11px solid transparent;
         }
       }
-      .article-title{
+
+      .article-title {
         max-width: 550px;
         margin-left: 20px;
         font-size: 16px;
@@ -110,7 +122,8 @@ export default {
         cursor: pointer;
       }
     }
-    .right{
+
+    .right {
       width: 210px;
       font-size: 14px;
       font-weight: 400;
@@ -119,7 +132,8 @@ export default {
     }
   }
 }
-.content{
+
+.content {
   width: 100%;
   padding: 20px 0;
   font-size: 14px;
@@ -128,18 +142,37 @@ export default {
   line-height: 26px;
   height: 104px;
 }
-.original{
+
+.original {
   display: flex;
   justify-content: space-between;
-  .left{
+
+  .right {
     font-size: 14px;
     font-weight: 400;
     color: #3385FF;
+    cursor: pointer;
   }
-  .right{
-    width: 200px;
+
+  .left {
+    width: 150px;
     display: flex;
     justify-content: space-between;
+
+    svg {
+      width: 15px;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+
+      &:last-child {
+        svg {
+          width: 20px;
+        }
+      }
+    }
   }
 }
 </style>

@@ -39,6 +39,7 @@ export default {
   ],
 
   components: true,
+  loading:'~/components/loading/index.vue',
 
   buildModules: [],
 
