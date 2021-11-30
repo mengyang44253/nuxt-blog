@@ -1,45 +1,60 @@
 <template>
   <div class="hot-article-item">
-    <div class="article-name textOverFlow">
-      {{item.title|textFormat}}
+    <div class="article-name textOverFlow" @click="goToDetail">
+      {{ item.title | textFormat }}
     </div>
     <div class="read-num">
-      {{item.reading}}
+      <svgIcon name="#icon-yueduliang" />
+      {{ item.reading }}
     </div>
   </div>
 </template>
 
 <script>
+import svgIcon from "@/components/common/svgIcon.vue";
 export default {
   name: "hotArticle",
-  props:{
-    item:{
-      type:Object,
-      default:function(){
-        return {}
-      }
-    }
+  components: {
+    svgIcon,
   },
-  mounted(){
-  }
-}
+  props: {
+    item: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
+  },
+  mounted() {},
+  methods: {
+    goToDetail() {
+      console.log(this.item);
+      this.$router.push({
+        path: `/detail/${this.item.id}`,
+      });
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">
-.hot-article-item{
+.hot-article-item {
   display: flex;
   justify-content: space-between;
   padding: 6px 0;
-  .article-name{
+  .article-name {
     width: 260px;
     font-size: 14px;
     font-weight: 400;
     color: #333333;
+    cursor: pointer;
   }
-  .read-num{
+  .read-num {
+    display: flex;
     font-size: 14px;
     font-weight: 400;
-    color: #CCCCCC;
+    color: #cccccc;
+    align-items: center;
   }
 }
 </style>

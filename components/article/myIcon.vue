@@ -1,23 +1,23 @@
 <template>
   <div class="icon-wrap">
     <div class="item home" @click="goToHome">
-      <sygIcon name="#icon-shouye1" />
+      <svgIcon name="#icon-shouye1" />
     </div>
     <div class="item github" @click="goToGithub">
-      <sygIcon name="#icon-github1" />
+      <svgIcon name="#icon-github1" />
     </div>
     <div class="item qq" @click="goToQq">
-      <sygIcon name="#icon-QQ" />
+      <svgIcon name="#icon-QQ" />
     </div>
     <div class="item wechat" @click="goToWechat">
-      <sygIcon name="#icon-weixin1" />
+      <svgIcon name="#icon-weixin1" />
     </div>
     <div class="item weibo" @click="goToWeibo">
-      <sygIcon name="#icon-weibo" />
+      <svgIcon name="#icon-weibo" />
     </div>
     <div class="item email" @click="goToEmail">
       <a href="mailto:466879168@qq.com">
-      <sygIcon name="#icon-youxiang1" />
+      <svgIcon name="#icon-youxiang1" />
       </a>
     </div>
     <el-dialog :visible.sync="dialogVisible" width="400px">
@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import sygIcon from "@/components/common/svgIcon.vue";
+import svgIcon from "@/components/common/svgIcon.vue";
 export default {
   name: "myIcon",
   components: {
-    sygIcon,
+    svgIcon,
   },
   data() {
     return {
