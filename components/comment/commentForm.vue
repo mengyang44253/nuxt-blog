@@ -1,52 +1,80 @@
 <template>
   <div class="comment-form-content">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="comment-ruleForm">
-      <el-form-item prop="content" class="content">
-        <el-input type="textarea" :autosize="{minRows:5}" v-model="ruleForm.content" placeholder="请输入评论内容"/>
-      </el-form-item>
-      <div class="displayWrap">
-        <el-form-item prop="name" class="name">
-          <el-input size="small" v-model="ruleForm.name" placeholder="昵称"/>
-        </el-form-item>
-        <el-form-item prop="email" class="email">
-          <el-input size="small" v-model="ruleForm.email" placeholder="邮箱"/>
-        </el-form-item>
-        <el-form-item prop="website" class="website">
-          <el-input size="small" v-model="ruleForm.website" placeholder="网址"/>
-        </el-form-item>
-        <el-form-item>
-          <el-input size="small" v-model="ruleForm.code" placeholder="验证码"/>
-          <canvas width="240" height="60" class="canvas-img-code" @click="changeCode"/>
-        </el-form-item>
-      </div>
-      <el-form-item class="submit tc">
-        <el-button class="save" :loading="btnLoading" type="primary" @click="save('ruleForm')">
-          发表评论
-        </el-button>
-      </el-form-item>
-
+    <el-form
+      :model="ruleForm"
+      :rules="rules"
+      ref="ruleForm"
+      class="comment-ruleForm"
+    >
+      <el-row>
+        <el-col :span="24">
+          <el-form-item prop="content" class="content">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 5 }"
+              v-model="ruleForm.content"
+              placeholder="请输入评论内容"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-form-item prop="name" class="name">
+            <el-input size="small" v-model="ruleForm.name" placeholder="昵称" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item prop="email" class="email">
+            <el-input
+              size="small"
+              v-model="ruleForm.email"
+              placeholder="邮箱"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item prop="website" class="website">
+            <el-input
+              size="small"
+              v-model="ruleForm.website"
+              placeholder="网址"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item class="submit tr">
+            <el-button
+              type="primary"
+              plain
+              :loading="btnLoading"
+              @click="save('ruleForm')"
+              size="small"
+              >发表评论</el-button
+            >
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
   </div>
 </template>
 
 <script>
-import {
-  validateEmail
-} from "~/utils/validate";
+import { validateEmail } from "~/utils/validate";
 
 export default {
   name: "commentForm",
   props: {
     articleId: {
       type: String,
-      default: null
+      default: null,
     },
     currentItem: {
       type: Object,
       default: function () {
-        return {}
-      }
-    }
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -63,15 +91,15 @@ export default {
           {
             required: true,
             message: "评论不能为空！",
-            trigger: "blur"
+            trigger: "blur",
           },
         ],
         name: [
           {
             required: true,
             message: "昵称不能为空！",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         email: [
           {
@@ -83,10 +111,10 @@ export default {
                   return callback(new Error("邮箱格式错误！"));
                 }
               } else {
-                return callback(new Error("请输入邮箱"))
+                return callback(new Error("请输入邮箱"));
               }
-            }
-          }
+            },
+          },
         ],
         code: [
           {
@@ -114,20 +142,20 @@ export default {
                 return callback(new Error("请输入验证码！"));
               }
             },
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
-      btnLoading: false
-    }
+      btnLoading: false,
+    };
   },
   mounted() {
-    this.$nextTick(() => this.changeCode())
+    // this.$nextTick(() => this.changeCode())
   },
   methods: {
     changeCode() {
-      let canvas = document.querySelector(".canvas-img-code")
-      let ctx = canvas.getContext("2d")
+      let canvas = document.querySelector(".canvas-img-code");
+      let ctx = canvas.getContext("2d");
       let nRandom1 = Math.floor(Math.random() * 10 + 5);
       let nRandom2 = Math.floor(Math.random() * 5);
       let nRandomResult = Math.floor(Math.random() * 3);
@@ -144,17 +172,17 @@ export default {
       this.random = {
         nRandom1,
         nRandom2,
-        operator: aOperator[nRandomResult]
+        operator: aOperator[nRandomResult],
       };
     },
     save(formName) {
-      this.$refs[formName].validate(valid => {
-          if (valid) {
-            this.saveFn();
-          } else {
-            return false;
-          }
-      })
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.saveFn();
+        } else {
+          return false;
+        }
+      });
     },
     async saveFn() {
       this.btnLoading = true;
@@ -166,19 +194,19 @@ export default {
       params.from_email = this.ruleForm.email;
       params.from_website = this.ruleForm.website;
       params.userAgent = navigator.userAgent;
-      params.status=1
+      params.status = 1;
       let res = await this.$store.dispatch("Comment/addComment", params);
       if (res.success) {
         this.btnLoading = false;
         this.$message({
-          message: '评论已提交，审核通过后将展示！',
-          type: 'success'
+          message: "评论已提交，审核通过后将展示！",
+          type: "success",
         });
-        this.ruleForm.content=""
+        this.ruleForm.content = "";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">
@@ -193,8 +221,11 @@ export default {
     flex-wrap: wrap;
   }
 
-  .name, .email, .website, .code {
-    width: 45%;
+  .name,
+  .email,
+  .website,
+  .code {
+    width: 100%;
   }
 
   .code {

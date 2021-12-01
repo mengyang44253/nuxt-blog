@@ -7,25 +7,23 @@
       </h2>
       <div class="other-info">
         <div class="mr10">
-          <i class="el-icon-user"></i>
-          <span class="author">
-            Dylan
-          </span>
+          <i class="el-icon-user" style="margin-right: 5px"></i>
+          <span class="author"> Dylan </span>
         </div>
         <div class="mr10">
-          <i class="iconfont icon-shijian"></i>
+          <svgIcon name="#icon-shijian"/>
           <span class="time">
-            {{ articleDetail[1].createTime | secondFormat }}
+            {{ articleDetail[1].create_time | secondFormat }}
           </span>
         </div>
         <div class="mr10">
-          <i class="iconfont icon-yueduliang"></i>
+          <svgIcon name="#icon-yueduliang"/>
           <span>
-            {{ articleDetail[1].readVolume }}
+            {{ articleDetail[1].reading }}
           </span>
         </div>
         <div class="mr10">
-          <i class="iconfont icon-pingjia"></i>
+          <svgIcon name="#icon-pingjia"/>
           <span>
             {{ commentTotal }}
           </span>
@@ -35,39 +33,31 @@
     </div>
     <!--  本文地址-->
     <div class="section copyright">
-      <p class="ml10 mb10">
+      <p class="mb10">
         <strong>版权声明:</strong>
         本站文章除特别声明外，均为本站原创。转载请注明出处，谢谢。
       </p>
-      <p class="ml10">
+      <p>
         <strong>本文地址:</strong>
         <a :href="fullPath" target="_blank">{{ fullPath }}</a>
       </p>
     </div>
     <!--  点赞-->
     <div class="operation section">
-      <div class="opinion" @click="likeSomeArticle">
+      <div class="opinion">
         <div class="like-wrap" title="点赞">
-          <i class="iconfont icon-dianzan"></i>
+          <div>{{ articleDetail[1].praise }}人点赞</div>
+          <div>
+            <svgIcon name="#icon-dianzan1" @click="likeSomeArticle"/>
+          </div>
         </div>
       </div>
-      <!-- 分享 -->
-      <!-- <div class="share">
-        <span>
-          分享到
-        </span>
-        <a href="">qq</a>
-        <a href="">qq空间</a>
-        <a href=""></a>
-        <a href=""></a>
-        <a href=""></a>
-      </div> -->
       <!-- 标签 -->
       <div class="tag-wrap mb10 tc">
         <i class="iconfont icon-tag"></i>
         <template
           v-for="item in articleDetail[1].label_data.filter(
-            item => item.label_type === 1
+            (item) => item.label_type === 1
           )"
         >
           <span class="tag-name" :key="item.label_id">
@@ -81,8 +71,7 @@
             上一篇：
             <nuxt-link
               :to="{
-                name: 'detail',
-                params: { id: articleDetail[0].id }
+                name: `detail/${articleDetail[0].id}`,
               }"
             >
               {{ articleDetail[0].title }}
@@ -92,11 +81,10 @@
         </div>
         <div class="nuxt">
           <p v-if="articleDetail[2].id">
-            上一篇：
+            下一篇：
             <nuxt-link
               :to="{
-                name: 'detail',
-                params: { id: articleDetail[2].id }
+                name: `detail/${articleDetail[2].id}`,
               }"
             >
               {{ articleDetail[2].title }}
@@ -117,56 +105,46 @@
       </div>
       <div class="userinfo">
         <div class="header">
-          <span>
-            作者简介
-          </span>
+          <span> 作者简介 </span>
           <span>
             <i class="iconfont icon-wo"></i>
-            <span>
-              dylan
-            </span>
+            <span> dylan </span>
           </span>
           <span class="cp" @click="openRewardDialog">
             <i class="iconfont icon-dashang"></i>
-            <span>
-              打赏
-            </span>
+            <span> 打赏 </span>
           </span>
         </div>
         <p class="author-summary">
           一日行善，福虽未至，祸自远矣。一日行恶，祸虽未至，福自远矣。行善之人，如春园之草，不见其长，日有所增。做恶之人，如磨刀之石，不见其损，日有所亏。福祸无门总在心，人心不善祸相侵。
         </p>
+        <myIcon/>
       </div>
     </div>
     <!--  评论列表-->
     <div class="section comment">
-      <h2 class="comment-title">
-        共{{ commentTotal }}条关于这篇文章的评论
-      </h2>
-      <commentForm :articleId="articleId"/>
-      <div class="commentWrap" v-loading="commentListLoading">
-        <commentItem
-          @replyComment="replyComment"
-          v-for="item in commentList"
-          :key="item.id"
-          :item="item"
-        />
+      <!--<h2 class="comment-title" v-html="`共 ${detail.articleInfor.commentCount} 条评论关于 “${detail.title.rendered}”`"></h2>-->
+      <div class="comment-wrap">
+        <comment :list="commentList" :total="commentTotal" :status="articleDetail[1].comment_status" :articleId="articleId"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import commentForm from "~/components/comment/commentForm";
-import commentItem from "~/components/comment/commentItem";
-import reward from '@/components/article/reward';
+import reward from "@/components/article/reward";
+import comment from "@/components/comment";
+import svgIcon from "~/components/common/svgIcon";
+import myIcon from "~/components/article/myIcon";
 
 export default {
   name: "detail-id",
+  layout:'articleDetail',
   components: {
-    commentForm,
-    commentItem,
-    reward
+    reward,
+    comment,
+    svgIcon,
+    myIcon,
   },
   async asyncData({store, params}) {
     let articleId = params.id;
@@ -185,11 +163,11 @@ export default {
       id: articleId,
       pagination: 1,
       start,
-      limit
+      limit,
     });
-    console.log(commentRes)
+    console.log(commentRes, "aaaaaaaaaa");
     let readRes = await store.dispatch("Article/updateReadByArticleId", {
-      id: articleId
+      id: articleId,
     });
     if (commentRes.success) {
       commentList = commentRes.data;
@@ -201,7 +179,7 @@ export default {
       start,
       limit,
       commentList,
-      commentTotal
+      commentTotal,
     };
   },
   data() {
@@ -211,16 +189,17 @@ export default {
       commentDialog: false,
       commentListLoading: false,
       rewardMyDialog: false,
-    }
+    };
   },
   computed: {
     fullPath() {
       return `www.baidu.com/${this.articleId}`;
-    }
+    },
   },
   mounted() {
     //下面这行代码解决prismjs不能异步加载必须刷新一下才显示的问题
-    process.browser && document.querySelectorAll("pre code").forEach(block => Prism.highlightElement(block));
+    // process.browser && document.querySelectorAll("pre code").forEach(block => Prism.highlightElement(block));
+    console.log(this.articleDetail);
   },
   methods: {
     async getList() {
@@ -253,15 +232,15 @@ export default {
       if (res.success) {
         this.$message({
           message: "点赞成功",
-          type: "success"
+          type: "success",
         });
       }
     },
     openRewardDialog() {
-      this.rewardMyDialog = true
-    }
-  }
-}
+      this.rewardMyDialog = true;
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">
@@ -277,7 +256,7 @@ export default {
 
   .title {
     padding: 10px 0;
-    font-size: 25px;
+    font-size: 20px;
   }
 
   .other-info {
@@ -288,6 +267,16 @@ export default {
     border-bottom: 1px solid #e9eaed;
     color: #999 !important;
     font-size: 12px;
+
+    svg {
+      width: 15px;
+      margin-right: 5px;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .content-details {
@@ -298,23 +287,18 @@ export default {
 .operation {
   .opinion {
     .like-wrap {
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
+      display: flex;
+      flex-direction: column;
       text-align: center;
-      border-radius: 50%;
-      cursor: pointer;
-      margin: 10px auto;
-      background: rgb(243, 241, 241);
 
-      .icon-dianzan {
-        font-size: 30px;
-        color: #b2bac2;
+      div:nth-child(1) {
+        font-size: 12px;
       }
 
-      &:hover {
-        .icon-dianzan {
-          color: #8a93a0;
+      div:last-child {
+        svg {
+          font-size: 30px;
+          cursor: pointer;
         }
       }
     }
@@ -332,14 +316,12 @@ export default {
   }
 }
 
-.author-introduct {
+.author {
   display: flex;
 
   .avatar-wrap {
     width: 100px;
     height: 100px;
-    border-radius: 5px;
-    margin-left: 10px;
     border-radius: 5px;
     overflow: hidden;
   }
@@ -349,7 +331,7 @@ export default {
     margin-left: 10px;
 
     .header {
-      margin-bottom: 20px;
+      margin-bottom: 5px;
     }
 
     .author-summary {
