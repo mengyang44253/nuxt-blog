@@ -21,13 +21,13 @@
         <div>
           <svgIcon name="#icon-dianzan"/>
           <span>
-          1000
+          {{articleDetail.praise}}
         </span>
         </div>
         <div>
           <svgIcon name="#icon-yueduliang"/>
           <span>
-          100
+          {{articleDetail.reading}}
         </span>
         </div>
 
@@ -55,7 +55,7 @@ export default {
       }
     }
   },
-  dara() {
+  data() {
     return {}
   },
   watch: {
@@ -63,6 +63,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.articleDetail)
   },
   methods: {
     goToDetail() {
@@ -161,6 +162,7 @@ export default {
 
     svg {
       width: 15px;
+      margin-right: 4px;
     }
 
     div {

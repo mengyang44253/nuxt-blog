@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="list">
       <div class="item" v-for="item in list" :key="item.id">
-        <div class="avatar" :class="[`color-${random}`]">
+        <div class="avatar" :class="[`color-${random()}`]">
           {{ item.from_name.substr(0, 1) }}
         </div>
         <div class="content">
@@ -13,18 +13,18 @@
             <div class="time">
               {{ item.create_time|secondFormat }}
             </div>
-            <div class="text">
-              <svgIcon name="#icon-send"/>
-              回复
-            </div>
+            <!--            <div class="text">-->
+            <!--              <svgIcon name="#icon-send"/>-->
+            <!--              回复-->
+            <!--            </div>-->
           </div>
           <div class="bottom">
             <div class="comment-text">
-              {{item.content}}
+              {{ item.content }}
             </div>
             <div class="footer">
               <div class="app">
-
+                浏览器标识和评论点赞踩暂时未做
               </div>
               <div class="opinion">
 
@@ -59,15 +59,14 @@ export default {
   data() {
     return {}
   },
-  computed: {
-    random() {
-      return randomNum(1, 8)
-    }
-  },
   mounted() {
     console.log(this.list, 'llllllll')
   },
-  methods: {}
+  methods: {
+    random() {
+      return randomNum(1, 8)
+    }
+  }
 }
 </script>
 
@@ -92,6 +91,7 @@ export default {
 
       .content {
         flex: 1;
+
         .top {
           display: flex;
           align-items: baseline;
@@ -127,6 +127,7 @@ export default {
           background-color: #f8f8f9;
           padding: 16px 8px;
           margin-top: 10px;
+
           .comment-text {
             font-size: 14px;
           }
@@ -135,6 +136,7 @@ export default {
             margin-top: 16px;
             display: flex;
             justify-content: space-between;
+            font-size: 12px;
           }
         }
       }

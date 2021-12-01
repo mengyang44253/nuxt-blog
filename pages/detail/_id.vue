@@ -156,6 +156,7 @@ export default {
     let commentList = [];
     query.id = articleId;
     let res = await store.dispatch("Article/getArticleDetail", query);
+    console.log(res)
     if (res.success) {
       articleDetail = res.data;
     }
