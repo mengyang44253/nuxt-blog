@@ -1,5 +1,3 @@
-import { tree } from '@/utils/validate'
-
 export const state = () => ({
   menu: [],
   articleCount: null,
@@ -7,6 +5,7 @@ export const state = () => ({
   commentCount: null,
   articlePraise: null,
   sideTag: [],
+  allTag:[],
   newComment: [],
   hotArticle: [],
   friendLink:[]
@@ -39,6 +38,9 @@ export const mutations = {
   },
   updateFriendLink(state,payload) {
     state.friendLink=payload
+  },
+  updateAllTag(state,payload) {
+    state.allTag=payload
   }
 };
 
@@ -46,7 +48,7 @@ export const actions = {
   async nuxtServerInit({ commit, dispatch }, { req }) {
     //获取nav数据
     let { data } = await dispatch("Publish/getDirectoryList", {})
-    commit("updateMenu", tree(data))
+    commit("updateMenu", data)
     //文章总数
     let articleCount = await dispatch("Publish/getArticleCount", {})
     commit("updateArticleCount", articleCount.data)

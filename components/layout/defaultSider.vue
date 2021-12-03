@@ -145,6 +145,10 @@ export default {
       return randomNum(1, 8);
     },
     goToTagDetail(item) {
+      console.log(item)
+      this.$router.push({
+        path:`/article/${item.id}`
+      })
     },
     goToTags() {
       this.$router.push({

@@ -156,7 +156,7 @@ export default {
   }
 
   .left {
-    width: 150px;
+    width: 80px;
     display: flex;
     justify-content: space-between;
 

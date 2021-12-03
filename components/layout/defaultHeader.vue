@@ -12,7 +12,7 @@
       <div class="nav-wrapper">
         <el-menu class="nav-menu" mode="horizontal" @select="selectSomeMenu">
           <el-menu-item index="/"> 首页 </el-menu-item>
-          <template v-for="item in menu">
+          <template v-for="item in navMenu">
             <el-menu-item
               v-if="!item.children"
               :key="item.id"
@@ -53,6 +53,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { tree } from "@/utils/validate";
 export default {
   name: "defaultHeader",
   data() {
@@ -60,27 +61,35 @@ export default {
       searchValue: null,
     };
   },
-  computed: mapState(["menu"]),
+  computed: {
+    ...mapState(["menu"]),
+    navMenu(){
+      let arr=JSON.parse(JSON.stringify(this.menu))
+      return tree(arr)
+    }
+  },
   methods: {
-    selectSomeMenu(key,keyPath) {
-      console.log(key)
-      console.log(keyPath)
-      if(key ==='/'){
+    selectSomeMenu(key, keyPath) {
+      if (key === "/") {
         this.$router.push({
-          path:"/"
+          path: "/",
+        });
+      } else {
+        this.$router.push({
+          path:`/article`,
+          query:{
+            id:key
+          }
         })
-      }else{
-
       }
     },
     search() {
-      console.log(this.searchValue)
       this.$router.push({
-        name:"search",
-        params:{
-          title:this.searchValue
-        }
-      })
+        name: "search",
+        params: {
+          title: this.searchValue,
+        },
+      });
     },
   },
 };
